@@ -1,3 +1,44 @@
+<?php
+    include("dbConnection.php");
+        
+    $query = $db->prepare("SELECT * FROM leerlingen");
+    $query->execute();
+    $results = $query-> fetchAll (PDO::FETCH_ASSOC);
+        
+    $counter = 0;
+
+
+    echo "<table border='1'>";
+        echo "<tr>";    
+        echo "<td>Naam</td>";
+        echo "<td>Klas</td>";
+        echo "<td>Cijfer</td>";
+                
+        echo "</tr>";
+
+        foreach($results as $data) {
+            echo "<tr>";    
+            echo "<td>".$data['naam']."</td>";
+            echo "<td>".$data['klas']."</td>";
+            // het lukt mij niet om de naam in de url te krijgen
+            echo "<td> <a href='cijfers.php?id=".$data['id']."naam=".$data['naam']."'>cijfers</a></td>";
+            echo "</tr>";
+
+            $counter++;
+        }
+
+    echo "</table> <br>";
+
+    echo "aantal leerlingen is ". $counter;
+
+    echo "<br><br>";
+    echo "<a href='./insert.php'>Leerling toevoegen<a>";
+    
+    
+    
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,50 +52,6 @@
     <title>Home pagina</title>
 </head>
 <body>
-    <?php
-        try{
-            $db = new PDO("mysql:host=localhost;dbname=school",
-                "root", "");
-        } catch(PDOException $e) {
-            die("Error!: " . $e->getMessage());
-        }
-        
-        $query = $db->prepare("SELECT * FROM leerlingen");
-        $query->execute();
-        $results = $query-> fetchAll (PDO::FETCH_ASSOC);
-        
-        $counter = 0;
-
-
-        echo "<table border='1'>";
-            echo "<tr>";    
-                echo "<td>Naam</td>";
-                echo "<td>Klas</td>";
-                echo "<td>Cijfer</td>";
-                
-            echo "</tr>";
-
-            foreach($results as $data) {
-                echo "<tr>";    
-                    echo "<td>".$data['naam']."</td>";
-                    echo "<td>".$data['klas']."</td>";
-                    // het lukt mij niet om de naam in de url te krijgen
-                    echo "<td> <a href='cijfers.php?id=".$data['id']."naam=".$data['naam']."'>cijfers</a></td>";
-                echo "</tr>";
-
-                $counter++;
-            }
-
-        echo "</table> <br>";
-
-        echo "aantal leerlingen is ". $counter;
-
-        echo "<br><br>";
-        echo "<a href='./insert.php'>Leerling toevoegen<a>";
-    
-    
-    
-    ?>
     
 </body>
 </html>

@@ -1,3 +1,32 @@
+<?php
+    include("dbConnection.php");  
+        
+    $query = $db->prepare("SELECT * FROM leerlingen");
+    $query->execute();
+    $results = $query-> fetchAll (PDO::FETCH_ASSOC);
+
+    $inKlas = false;
+        
+        
+    if(isset($_POST['submit'])) {
+        $naam =ucwords($_POST['naam']);
+        $klas = strtoupper($_POST['klas']);
+            
+        foreach($results as $data) {
+            if((strtolower($naam) == strtolower($data['naam'])) && (strtolower($klas) == strtolower($data['klas']))) {
+                $inKlas = true;
+            }   
+        }
+            
+    } else {
+        $naam = '';
+        $klas = '';
+            
+    }
+    
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,40 +49,6 @@
     </style>
 </head>
 <body>
-    <?php
-        try{
-            $db = new PDO("mysql:host=localhost;dbname=school",
-                "root", "");
-        } catch(PDOException $e) {
-            die("Error!: " . $e->getMessage());
-        }
-        
-        $query = $db->prepare("SELECT * FROM leerlingen");
-        $query->execute();
-        $results = $query-> fetchAll (PDO::FETCH_ASSOC);
-
-        $inKlas = false;
-        
-        
-        if(isset($_POST['submit'])) {
-            $naam =ucwords($_POST['naam']);
-            $klas = strtoupper($_POST['klas']);
-            
-            foreach($results as $data) {
-                if((strtolower($naam) == strtolower($data['naam'])) && (strtolower($klas) == strtolower($data['klas']))) {
-                    $inKlas = true;
-                }   
-            }
-            
-        } else {
-            $naam = '';
-            $klas = '';
-            
-        }
-
-
-    
-    ?>
 
     <form action="" method="post">
         <label for="naam">Naam:</label>
